@@ -43,14 +43,36 @@ y1 = np.random.normal(2, 1.2, 300)  # 随机产生300个平均值为2，方差�
 
 data_set = []
 for (v1,v2) in zip(x1,y1):
-    data_set.append([[v1,v2],-1])
+    data_set.append([[v1,v2],1])
 
-
+for i in range(100):
+    flag = True
+    for x,y in data_set:
+        if y*(multi(w,x) + b) >= 0:
+            w = add(w,scale(x,-rate*y))
+            b = b + -rate*y
+            flag = False
+            break
+    print(w,b)
+    if flag:
+        print('结束')
+        break
 x2 = np.random.normal(7.5, 1.2, 300)
 y2 = np.random.normal(7.5, 1.2, 300)
 
 for (v1,v2) in zip(x2,y2):
-    data_set.append([[v1,v2],1])
+    data_set.append([[v1,v2],-1])
+
+
+
+
+
+colors1 = '#00CED1'  # 点的颜色
+colors2 = '#DC143C'
+area = np.pi * 4 ** 2  # 点面积
+# 画散点图
+
+import time
 
 for i in range(10000):
     flag = True
@@ -59,29 +81,23 @@ for i in range(10000):
             w = add(w,scale(x,rate*y))
             b = b + rate*y
             flag = False
-            break
-    print(w,b)
+    # w[0]*x1 + w[1]*x2 + b = 0
+
+    # time.sleep(1)
     if flag:
         print('结束')
         break
 
-
-# w[0]*x1 + w[1]*x2 + b = 0
-p1 = [0,-b/w[1]]
-p2 = [-b/w[0],0]
-print(p1,p2)
-
-
-
-colors1 = '#00CED1'  # 点的颜色
-colors2 = '#DC143C'
-area = np.pi * 4 ** 2  # 点面积
-# 画散点图
+p1 = [0, -b / w[1]]
+p2 = [-b / w[0], 0]
+print(p1, p2)
 plt.scatter(x1, y1, s=area, c=colors1, alpha=0.4, label='类别A')
 plt.scatter(x2, y2, s=area, c=colors2, alpha=0.4, label='类别B')
 plt.plot(p1, p2, linewidth='0.5', color='#000000')
+print(w,b)
 plt.legend()
-plt.savefig(r'12345svm.png', dpi=300)
 plt.show()
+
+
 
 
