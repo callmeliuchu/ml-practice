@@ -68,15 +68,19 @@ for (v1,v2) in zip(x2,y2):
 rate = 0.001
 w = [0.1,0.3,0.2]
 
-for i in range(10000):
+for i in range(100000):
     k = 0
     gap = [0,0,0]
+    flag = True
     for [x1,x2],y in data_set:
         xi = [1,x1,x2]
         p = h(multi(xi,w)) - y
-        if abs(p) > 0.5:
-            gap = add(gap, scale(xi, p))
-    w = add(w,scale(gap,-rate/len(data_set)))
+        gap = add(gap, scale(xi, p))
+        flag = False
+    w = add(w, scale(gap, -rate / len(data_set)))
+    # if flag:
+    #     break
+
     # gap = scale(gap,1/len(data_set))
     # w = add(w,scale(gap,-rate))
 
